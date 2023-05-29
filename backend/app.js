@@ -1,11 +1,10 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require('express'); //Importation d'Express
+const mongoose = require('mongoose'); //Importation de Mongoose
 require('dotenv').config();
 
-
-const sauceRoutes = require('./routes/sauce');
-const userRoutes = require('./routes/user');
-const path = require('path'); 
+const sauceRoutes = require('./routes/sauce'); //Importation du fichier sauce.js du dossier Routes
+const userRoutes = require('./routes/user'); //Importation du fichier user.js du dossier Routes
+const path = require('path'); //Importation du path du serveur
 
 mongoose.connect(process.env.MONGODB_URL,
 { useNewUrlParser: true,
