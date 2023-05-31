@@ -77,19 +77,28 @@ exports.getAllSauces = (req, res, next) => { //Pour intercepter uniquement les r
 exports.likeSauce = (req, res, next) => {    
     const like = req.body.like; //On extraie la valeur de la propriété "like" de l'objet "req.body" et on l'assigne à une constante 
     if(like === 1) { //valeur like = 1 = l'utilisateur aime la sauce 
-        Sauce.updateOne({_id: req.params.id}, { $inc: {likes: 1}, $push: {usersLiked: req.body.userId}, _id: req.params.id})
+        Sauce.updateOne({_id: req.params.id}, //une méthode utilisée dans le contexte de MongoDB pour mettre à jour un document spécifique dans une collection
+            {
+                $inc: {likes: 1}, //opérateur qui incrémente la valeur du champ likes de 1
+                $push: {usersLiked: req.body.userId}, //ajoute l'ID de l'utilisateur à la fin du tableau usersLiked
+                _id: req.params.id 
+        })
         .then(() => res.status(200).json({ message: 'Votre Like a bien été ajouté' }))
         .catch(error => res.status(400).json({ error }))
 
     } else if(like === -1) { //valeur like = -1 = l'utilisateur n'aime pas la sauce (Dislike)
-        Sauce.updateOne({_id: req.params.id}, {$inc: {dislikes: 1}, $push: {usersDisliked: req.body.userId}, _id: req.params.id})
+        Sauce.updateOne({_id: req.params.id}, 
+            {
+                $inc: {dislikes: 1}, //opérateur qui incrémente la valeur du champ dislikes de 1
+                $push: {usersDisliked: req.body.userId}, //ajoute l'ID de l'utilisateur à la fin du tableau usersDisliked
+                _id: req.params.id})
         .then(() => res.status(200).json({message: 'Votre Dislike a bien été ajouté'}))
         .catch(error => res.status(400).json({ error }))
 
     } else { //Annulation du bouton "Like" ou "Dislike"
         Sauce.findOne({_id: req.params.id})
         .then(sauce => {
-            if(sauce.usersLiked.indexOf(req.body.userId)!== -1){
+            if(sauce.usersLiked.indexOf(req.body.userId)!== -1){ //index of = utilisée pour rechercher la première occurrence d'un élément dans un tableau ou une chaîne de caractères
                 Sauce.updateOne({_id: req.params.id}, {$inc: {likes: -1},$pull: {usersLiked: req.body.userId}, _id: req.params.id})
                 .then(() => res.status(200).json({message: 'Vous n avez pas réagit à cette sauce'}))
                 .catch(error => res.status(400).json({ error }))
