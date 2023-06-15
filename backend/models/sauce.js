@@ -1,6 +1,6 @@
 const mongoose = require('mongoose'); //Importation de Mongoose
 
-const sauceSchema = mongoose.Schema({
+const sauceSchema = mongoose.Schema({ //la méthode Schéma de Mongoose permet de créer un schéma de données pour la BDD
     userId: {type: String, required: true},
     name: {type: String, required: true},
     manufacturer: {type: String, required: true},
@@ -14,4 +14,4 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: { type: [String] }
 });
 
-module.exports = mongoose.model('Sauce', sauceSchema);
+module.exports = mongoose.model('Sauce', sauceSchema); // la méthode model transforme ce modèle en un modèle utilisable
